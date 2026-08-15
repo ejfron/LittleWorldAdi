@@ -41,7 +41,7 @@ function togglePlay() {
 function selectSong(index: number) {
   const wasPlaying = isPlaying.value || index !== currentIndex.value
   currentIndex.value = index
-  isEx  panded.value = false
+  isExpanded.value = false
   
   nextTick(() => {
     if (wasPlaying) play()
