@@ -41,8 +41,8 @@ function togglePlay() {
 function selectSong(index: number) {
   const wasPlaying = isPlaying.value || index !== currentIndex.value
   currentIndex.value = index
-  isExpanded.value = false
-  // Wait for the :src binding to update the <audio> element before playing.
+  isEx  panded.value = false
+  
   nextTick(() => {
     if (wasPlaying) play()
   })
