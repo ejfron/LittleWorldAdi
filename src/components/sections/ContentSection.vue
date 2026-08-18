@@ -1,20 +1,12 @@
 <script setup lang="ts">
-
 import OverviewCards from './OverviewCards.vue'
 import MemoriesCard from './MemoriesCard.vue'
 import GalleryPreview from './GalleryPreview.vue'
 import DetailsCard from './DetailsCard.vue'
-
-const store = useMemoryStore()
-
-
 </script>
 
 <template>
-  <section
-  
-    class="bg-white/40 py-20 lg:py-28"
-  >
+  <section class="bg-white/40 py-20 lg:py-28">
     <div class="mx-auto max-w-content px-6 lg:px-10">
       <OverviewCards />
 
