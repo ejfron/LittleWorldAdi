@@ -1,6 +1,28 @@
 <script setup lang="ts">
-import { memories } from '@/data/content'
+import { ref, computed } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useMemoryStore } from '@/stores/memoryStore'
 import PageHeader from '@/components/ui/PageHeader.vue'
+
+const store = useMemoryStore()
+const { memories } = storeToRefs(store)
+
+// ─── Date formatter ──────────────────────────────────────────
+function formatDate(dateString: string): string {
+  if (!dateString) return ''
+  try {
+    const date = new Date(dateString)
+
+    if (isNaN(date.getTime())) return dateString
+    return new Intl.DateTimeFormat('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    }).format(date)
+  } catch {
+    return dateString
+  }
+}
 </script>
 
 <template>
@@ -47,7 +69,8 @@ import PageHeader from '@/components/ui/PageHeader.vue'
             :class="index % 2 === 1 ? 'lg:order-1 lg:text-right' : ''"
           >
             <p class="text-xs font-semibold uppercase tracking-widest text-clay">
-              {{ memory.date }}
+              <!-- 👇 formatted date here -->
+              {{ formatDate(memory.date) }}
             </p>
             <p class="mt-3 text-balance font-display text-2xl leading-snug text-ink">
               {{ memory.quote }}

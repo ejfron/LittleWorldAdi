@@ -11,7 +11,7 @@ import MusicPlayer from '@/components/layout/MusicPlayer.vue'
     <main class="pb-20 md:pb-0">
       <router-view v-slot="{ Component }">
         <transition name="page" mode="out-in">
-          <component :is="Component" />
+          <component :is="Component" :key="$route.fullPath" />
         </transition>
       </router-view>
     </main>

@@ -1,18 +1,24 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { galleryPhotos, galleryCategories } from '@/data/content'
+import { storeToRefs } from 'pinia'
+import { useMemoryStore } from '@/stores/memoryStore'
+import { galleryCategories } from '@/data/content'   // categories stay static
+import type { GalleryPhoto } from '@/types'
 import PageHeader from '@/components/ui/PageHeader.vue'
 
+const store = useMemoryStore()
+const { galleryPhotos } = storeToRefs(store)   // ✅ pulls live data, incl. uploads
+
 const activeCategory = ref('all')
-const lightboxPhoto = ref<(typeof galleryPhotos)[number] | null>(null)
+const lightboxPhoto = ref<GalleryPhoto | null>(null)
 
 const filteredPhotos = computed(() =>
   activeCategory.value === 'all'
-    ? galleryPhotos
-    : galleryPhotos.filter((photo) => photo.category === activeCategory.value)
+    ? galleryPhotos.value
+    : galleryPhotos.value.filter((photo) => photo.category === activeCategory.value)
 )
 
-function openLightbox(photo: (typeof galleryPhotos)[number]) {
+function openLightbox(photo: GalleryPhoto) {
   lightboxPhoto.value = photo
 }
 

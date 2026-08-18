@@ -1,11 +1,34 @@
 <script setup lang="ts">
-import { galleryPhotos } from '@/data/content'
+import { ref, computed } from 'vue'
+import { storeToRefs } from 'pinia'
+import { Settings } from '@lucide/vue'
+import { useMemoryStore } from '@/stores/memoryStore'
+import DeleteImageModal from '@/components/modal/DeleteImageModal.vue'
 
-const previewPhotos = galleryPhotos.slice(0, 6)
+const store = useMemoryStore()
+const { galleryPhotos } = storeToRefs(store)
+
+const previewPhotos = computed(() => {
+  const photos = galleryPhotos.value
+  return Array.isArray(photos) ? photos.slice(0, 6) : []
+})
+
+const showManageModal = ref(false)
 </script>
 
 <template>
-  <div>
+  <div class="relative">
+    <!-- Manage / Delete trigger -->
+    <button
+      type="button"
+      @click="showManageModal = true"
+      class="absolute -top-2 right-0 z-10 flex items-center gap-1 rounded-full bg-white/80 px-2.5 py-1 text-xs font-medium text-ink-soft shadow-sm backdrop-blur-sm transition-colors hover:bg-white hover:text-ink"
+      aria-label="Manage photos"
+    >
+      <Settings class="h-3.5 w-3.5" />
+      Manage
+    </button>
+
     <div class="grid grid-cols-3 gap-3">
       <button
         v-for="photo in previewPhotos"
@@ -31,5 +54,7 @@ const previewPhotos = galleryPhotos.slice(0, 6)
         <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
       </svg>
     </router-link>
+
+    <DeleteImageModal v-model:visible="showManageModal" />
   </div>
 </template>

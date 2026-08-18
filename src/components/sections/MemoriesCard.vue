@@ -1,17 +1,71 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { memories } from '@/data/content'
+import { ref, computed, watch } from 'vue'
+import { storeToRefs } from 'pinia'
+import { Settings } from '@lucide/vue'
+import { useMemoryStore } from '@/stores/memoryStore'
+import DeleteImageModal from '@/components/modal/DeleteImageModal.vue'
+
+const store = useMemoryStore()
+const { memories } = storeToRefs(store)
 
 const activeIndex = ref(0)
-const active = computed(() => memories[activeIndex.value])
+
+
+const previousLength = ref(memories.value.length)
+
+watch(
+  memories,
+  (list) => {
+    if (!Array.isArray(list)) return
+
+    if (list.length === 0) {
+      activeIndex.value = 0
+      previousLength.value = 0
+      return
+    }
+
+    if (list.length > previousLength.value) {
+      activeIndex.value = 0
+    } else if (activeIndex.value >= list.length) {
+      activeIndex.value = 0
+    }
+
+    previousLength.value = list.length
+  },
+  { immediate: true }
+)
+
+const active = computed(() => {
+  const list = memories.value
+  if (!Array.isArray(list) || list.length === 0) {
+    return { id: 'empty', quote: 'No memories yet—add one!', date: '', image: '' }
+  }
+  const index = activeIndex.value < list.length ? activeIndex.value : 0
+  return list[index]
+})
 
 function goTo(index: number) {
-  activeIndex.value = index
+  const list = memories.value
+  if (!Array.isArray(list) || list.length === 0) return
+  activeIndex.value = Math.min(index, list.length - 1)
 }
+
+const showManageModal = ref(false)
 </script>
 
 <template>
-  <div class="rounded-3xl border border-stone-200/70 bg-ivory p-6 shadow-card">
+  <div class="relative rounded-3xl border border-stone-200/70 bg-ivory p-6 shadow-card">
+    <!-- Manage / Delete trigger -->
+    <button
+      type="button"
+      @click="showManageModal = true"
+      class="absolute -top-2 right-4 z-10 flex items-center gap-1 rounded-full bg-white/80 px-2.5 py-1 text-xs font-medium text-ink-soft shadow-sm backdrop-blur-sm transition-colors hover:bg-white hover:text-ink"
+      aria-label="Manage photos"
+    >
+      <Settings class="h-3.5 w-3.5" />
+      Manage
+    </button>
+
     <div class="flex items-start gap-5">
       <span class="font-display text-4xl leading-none text-stone-300" aria-hidden="true">&ldquo;</span>
 
@@ -55,6 +109,8 @@ function goTo(index: number) {
         <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
       </svg>
     </router-link>
+
+    <DeleteImageModal v-model:visible="showManageModal" />
   </div>
 </template>
 

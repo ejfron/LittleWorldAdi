@@ -1,14 +1,19 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { navLinks } from '@/data/content'
+import { Plus } from '@lucide/vue'
 import HeartIcon from '@/components/ui/HeartIcon.vue'
+import AddImage from '@/components/modal/Addimages.vue'
 
 const route = useRoute()
+const showModal = ref(false)
 </script>
 
 <template>
   <header class="sticky top-0 z-50 border-b border-stone-200/70 bg-cream/85 backdrop-blur-md">
     <nav class="mx-auto flex max-w-content items-center justify-between px-6 py-4 lg:px-10">
+      <!-- Logo -->
       <router-link to="/" class="flex items-center gap-2.5">
         <span class="h-5 w-5 text-ink">
           <HeartIcon />
@@ -16,6 +21,7 @@ const route = useRoute()
         <span class="font-display text-lg tracking-tight text-ink">Our Little World</span>
       </router-link>
 
+      <!-- Nav links (desktop) -->
       <ul class="hidden items-center gap-9 md:flex">
         <li v-for="link in navLinks" :key="link.href">
           <router-link
@@ -32,13 +38,28 @@ const route = useRoute()
         </li>
       </ul>
 
-      <router-link
-        to="/details"
-        class="inline-flex items-center gap-2 rounded-full bg-stone-100 px-4 py-2 text-sm text-ink transition-colors hover:bg-stone-200"
-      >
-        <span class="h-4 w-4"><HeartIcon /></span>
-        For Us
-      </router-link>
+      <!-- Action Buttons -->
+      <div class="flex gap-4">
+        <!-- For Us -->
+        <router-link
+          to="/details"
+          class="inline-flex items-center gap-2 rounded-full bg-stone-100 px-4 py-2 text-sm text-ink transition-colors hover:bg-stone-200"
+        >
+          <span class="h-4 w-4"><HeartIcon /></span>
+          For Us
+        </router-link>
+
+        <!-- Add Memories -->
+        <button
+          @click="showModal = true"
+          class="inline-flex cursor-pointer items-center gap-2 rounded-full bg-stone-100 px-2 py-2 text-sm text-ink transition-colors hover:bg-stone-200"
+        >
+          <Plus />
+        </button>
+      </div>
     </nav>
   </header>
+
+\
+  <AddImage v-model:visible="showModal" />
 </template>
