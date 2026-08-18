@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
-import { useMemoryStore } from '@/stores/memoryStore'
+
 import OverviewCards from './OverviewCards.vue'
 import MemoriesCard from './MemoriesCard.vue'
 import GalleryPreview from './GalleryPreview.vue'

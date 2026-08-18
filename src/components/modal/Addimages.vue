@@ -26,6 +26,7 @@ const UPLOAD_PASSWORD = import.meta.env.VITE_UPLOAD_PASSWORD as string | undefin
 const isUnlocked = ref(false)
 const passwordInput = ref('')
 const passwordError = ref('')
+const fileInput = ref<HTMLInputElement | null>(null)
 
 const checkPassword = () => {
   if (!UPLOAD_PASSWORD) {
@@ -242,7 +243,7 @@ const handleKeydown = (e: KeyboardEvent) => {
                   @drop="handleDrop"
                   @dragover="handleDragOver"
                   class="flex min-h-[180px] cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-stone-300 bg-stone-50/50 transition-colors hover:border-clay hover:bg-stone-100/50"
-                  @click="$refs.fileInput?.click()"
+                  @click="fileInput?.click()"
                 >
                   <Upload class="mb-2 h-10 w-10 text-stone-400" />
                   <p class="text-sm text-ink-soft">
