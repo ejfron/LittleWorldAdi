@@ -3,7 +3,7 @@ import { ref, computed, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { Settings } from '@lucide/vue'
 import { useMemoryStore } from '@/stores/memoryStore'
-import DeleteImageModal from '@/components/modal/DeleteImageModal.vue'
+import DeleteImageModal from '@/components/modal/DeleteImagemodal.vue'
 
 const store = useMemoryStore()
 const { memories } = storeToRefs(store)

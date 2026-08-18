@@ -7,7 +7,7 @@ import type { GalleryPhoto } from '@/types'
 import PageHeader from '@/components/ui/PageHeader.vue'
 
 const store = useMemoryStore()
-const { galleryPhotos } = storeToRefs(store)   // ✅ pulls live data, incl. uploads
+const { galleryPhotos } = storeToRefs(store)  
 
 const activeCategory = ref('all')
 const lightboxPhoto = ref<GalleryPhoto | null>(null)
