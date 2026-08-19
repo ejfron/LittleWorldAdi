@@ -80,7 +80,7 @@ export const useMemoryStore = defineStore('memory', () => {
     category: string = 'everyday'
   ) {
     const id = generateId('m')
-    const parts = [title, location, notes].filter(Boolean)
+    const parts = [notes, location].filter(Boolean)
     const quote = parts.length ? parts.join(' — ') : 'A beautiful memory'
 
     const newMemory: Memory = {
